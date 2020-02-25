@@ -4,5 +4,5 @@
  */
 public class Player
 {
-    String PlayerName;
+    String PlayerName = "test";
 }
