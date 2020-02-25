@@ -9,4 +9,9 @@ public class Snake {
     //Grow
 
     //EVT. Collision
+
+    private void moveUp()
+    {
+        
+    }
 }
