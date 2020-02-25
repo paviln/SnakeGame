@@ -2,7 +2,9 @@
  * @author Henrik
  * @since 1.0.0
  */
-public class Snake {
+public class Snake
+{
+
 
 
     //Movement
