@@ -8,7 +8,7 @@ import javafx.stage.Stage;
  */
 public class App extends Application
 {
-
+    static Stage ps;
     public static void main(String[] args)
     {
         launch(args);
@@ -17,10 +17,15 @@ public class App extends Application
     @Override
     public void start(Stage primaryStage) throws Exception
     {
-        Arena arena = new Arena(new Player());
-        primaryStage.setScene(new Scene(arena));
+        this.ps = primaryStage;
+        Menu menu = new Menu();
+        primaryStage.setScene(new Scene(menu, 500, 500));
+        primaryStage.setTitle("SnakeGame");
         primaryStage.show();
-        arena.requestFocus();
-        arena.play();
+
+    }
+
+    public static Stage getPs() {
+        return ps;
     }
 }

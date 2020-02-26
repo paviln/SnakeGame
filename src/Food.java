@@ -11,7 +11,7 @@ public class Food{
 
     public int apple_x;
     public int apple_y;
-    ImageView;
+    //ImageView;
 
         //randomly locate an apple on the board
         public void locateApple() {
@@ -23,7 +23,7 @@ public class Food{
             viewApple.setScaleY(0.2);
             viewApple.setLayoutX(apple_x);
             viewApple.setLayoutY(apple_y);
-            fg.getChildren().add(viewApple);
+            //fg.getChildren().add(viewApple);
         }
 
         private void checkApple(){
