@@ -6,7 +6,6 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import javafx.util.Duration;
 
 /**
@@ -16,11 +15,11 @@ import javafx.util.Duration;
 public class Arena extends StackPane
 {
     static final int SIZE = 25;
-    Directions currentDirection, newDirection = Directions.PAUSE;
+    Directions currentDirection = Directions.PAUSE;
     int x = 25;
     int y = 25;
     private Player player;
-    private Circle Snake = new Circle();
+    private Snake snake = new Snake(100, 100);
     private Timeline gameLoop = new Timeline();
     private Square[][] squares = new Square[15][15];
     private Canvas bg = new Canvas(SIZE * 15, SIZE * 15);
@@ -28,6 +27,7 @@ public class Arena extends StackPane
 
     public Arena(Player player)
     {
+        this.requestFocus();
         this.getChildren().addAll(bg, fg);
         this.player = player;
         setupGameLoop();
@@ -35,6 +35,7 @@ public class Arena extends StackPane
         generateLevel();
         drawBoard();
         movement();
+        snake.grow(75, 100);
     }
 
     private void generateLevel()
@@ -71,7 +72,7 @@ public class Arena extends StackPane
     private void setupGameLoop()
     {
         // Refresh 60 times pr. second
-        Duration frameRate = Duration.millis(1000.0 / 60.0);
+        Duration frameRate = Duration.millis(1000.0 / 1.0);
 
         // Update every frame
         KeyFrame frame = new KeyFrame(frameRate, "Game loop", event ->
@@ -88,22 +89,21 @@ public class Arena extends StackPane
     {
         GraphicsContext gc = fg.getGraphicsContext2D();
 
-        gc.clearRect(x, y, 25, 25);
-
-        if (x % 25 == 0 && y % 25 == 0)
+        for (Square point : snake.getPoints())
         {
-            currentDirection = newDirection;
+            gc.clearRect(point.getX(), point.getY(), 25, 25);
         }
+
         switch (currentDirection)
         {
             case UP:
-                y -= 1;
+                snake.moveUp();
                 break;
             case DOWN:
-                y += 1;
+                y += 25;
                 break;
             case LEFT:
-                x -= 1;
+                x -= 25;
                 break;
             case RIGHT:
                 x += 1;
@@ -112,7 +112,11 @@ public class Arena extends StackPane
                 break;
         }
         gc.setFill(Color.BLACK);
-        gc.fillRect(x, y, 25, 25);
+        for (Square point : snake.getPoints())
+        {
+            gc.fillRect(point.getX(), point.getY(), 25, 25);
+        }
+
     }
 
     public void play()
@@ -126,19 +130,19 @@ public class Arena extends StackPane
         {
             if (event.getCode() == KeyCode.UP && currentDirection != Directions.DOWN)
             {
-                newDirection = Directions.UP;
+                currentDirection = Directions.UP;
             }
             if (event.getCode() == KeyCode.DOWN && currentDirection != Directions.UP)
             {
-                newDirection = Directions.DOWN;
+                currentDirection = Directions.DOWN;
             }
             if (event.getCode() == KeyCode.LEFT && currentDirection != Directions.RIGHT)
             {
-                newDirection = Directions.LEFT;
+                currentDirection = Directions.LEFT;
             }
             if (event.getCode() == KeyCode.RIGHT && currentDirection != Directions.LEFT)
             {
-                newDirection = Directions.RIGHT;
+                currentDirection = Directions.RIGHT;
             }
         });
     }

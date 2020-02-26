@@ -1,4 +1,4 @@
-import java.util.ArrayList;
+import java.util.LinkedList;
 
 
 /**
@@ -8,17 +8,17 @@ import java.util.ArrayList;
 public class Snake
 {
     private int length;
-    private ArrayList<Square> points;
+    private LinkedList<Square> points = new LinkedList<>();
     private int xMovement;
     private int yMovement;
     private int head;
 
     public Snake(int x, int y)
     {
-      grow(x,y);
+        grow(x,y);
     }
 
-    private ArrayList<Square> getPoints()
+    public LinkedList<Square> getPoints()
     {
         return points;
     }
@@ -28,30 +28,33 @@ public class Snake
         points.add(new Square(x,y));
     }
 
-    
 
-    private void moveUp()
+
+    public void moveUp()
     {
-        if (yMovement == 1) return;
         xMovement = 0;
-        yMovement = 1;
+        yMovement = -1;
+        points.push(new Square(points.getFirst().getX(), points.getFirst().getY() - 25));
+        points.removeLast();
+
     }
 
-    private void moveDown()
+    public void moveDown()
     {
         if (yMovement == -1) return;
         xMovement = 0;
         yMovement = -1;
     }
 
-    private void moveRight()
+    public void moveRight()
     {
-        if (xMovement == 1) return;
-        xMovement = 1;
-        yMovement = 0;
+        for (Square point : points)
+        {
+            point.setX(point.getY() + 1);
+        }
     }
 
-    private void moveLeft()
+    public void moveLeft()
     {
         if (xMovement == -1) return;
         xMovement = -1;
