@@ -48,9 +48,10 @@ public class Menu extends Pane {
             public void handle (ActionEvent event){
 
                 //Change to arena scene
-                Arena arena = new Arena(player1);
+                Arena arena = new Arena(500, 500, player1);
                 App.getPs().setScene(new Scene(arena));
                 arena.play();
+                arena.requestFocus();
             }
         });
         this.getChildren().addAll(tfPlayerName, btnPlay, label);

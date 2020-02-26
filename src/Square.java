@@ -26,18 +26,23 @@ public class Square
         return x;
     }
 
-    public int getY()
-    {
-        return y;
-    }
-
     public void setX(int x)
     {
         this.x = x;
     }
 
+    public int getY()
+    {
+        return y;
+    }
+
     public void setY(int y)
     {
         this.y = y;
+    }
+
+    public Square move(int x, int y)
+    {
+        return new Square(getX() + x, getY() + y);
     }
 }

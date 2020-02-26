@@ -15,34 +15,32 @@ import javafx.util.Duration;
 public class Arena extends StackPane
 {
     static final int SIZE = 25;
-    Directions currentDirection = Directions.PAUSE;
-    int x = 25;
-    int y = 25;
+    private Square[][] squares;
     private Player player;
-    private Snake snake = new Snake(100, 100);
+    private Snake snake;
     private Timeline gameLoop = new Timeline();
-    private Square[][] squares = new Square[15][15];
     private Canvas bg = new Canvas(SIZE * 15, SIZE * 15);
     private Canvas fg = new Canvas(SIZE * 15, SIZE * 15);
 
-    public Arena(Player player)
+    public Arena(int width, int height, Player player)
     {
-        this.requestFocus();
+        squares = new Square[width / SIZE][height / SIZE];
+        this.snake = new Snake(new Square(width / 2, height / 2));
         this.getChildren().addAll(bg, fg);
         this.player = player;
+        movement();
         setupGameLoop();
         update();
         generateLevel();
         drawBoard();
-        movement();
-        snake.grow(75, 100);
+
     }
 
     private void generateLevel()
     {
-        for (int y = 0; y < 15; y++)
+        for (int y = 0; y < squares.length; y++)
         {
-            for (int x = 0; x < 15; x++)
+            for (int x = 0; x < squares[y].length; x++)
             {
                 squares[x][y] = new Square((x + y) % 2 == 0, x * 25, y * 25);
             }
@@ -56,23 +54,18 @@ public class Arena extends StackPane
         {
             for (Square square : squares)
             {
-                if (square.isLight())
-                {
-                    gc.setFill(Color.valueOf("#fff"));
-                } else
-                {
-                    gc.setFill(Color.valueOf("#3258a8"));
-                }
-
+                gc.setFill(Color.valueOf("#424242"));
                 gc.fillRect(square.getX(), square.getY(), SIZE, SIZE);
+                gc.setFill(Color.valueOf("#808080"));
+                gc.fillRect(square.getX() + 2, square.getY() + 2, SIZE - 2, SIZE - 2);
             }
         }
     }
 
     private void setupGameLoop()
     {
-        // Refresh 60 times pr. second
-        Duration frameRate = Duration.millis(1000.0 / 1.0);
+        // Refresh 5 times pr. second
+        Duration frameRate = Duration.seconds(0.2);
 
         // Update every frame
         KeyFrame frame = new KeyFrame(frameRate, "Game loop", event ->
@@ -89,34 +82,19 @@ public class Arena extends StackPane
     {
         GraphicsContext gc = fg.getGraphicsContext2D();
 
-        for (Square point : snake.getPoints())
+        for (Square square : snake.getSquares())
         {
-            gc.clearRect(point.getX(), point.getY(), 25, 25);
+            gc.clearRect(square.getX(), square.getY(), SIZE, SIZE);
         }
 
-        switch (currentDirection)
-        {
-            case UP:
-                snake.moveUp();
-                break;
-            case DOWN:
-                y += 25;
-                break;
-            case LEFT:
-                x -= 25;
-                break;
-            case RIGHT:
-                x += 1;
-                break;
-            case PAUSE:
-                break;
-        }
-        gc.setFill(Color.BLACK);
-        for (Square point : snake.getPoints())
-        {
-            gc.fillRect(point.getX(), point.getY(), 25, 25);
-        }
+        snake.move();
 
+        gc.setFill(Color.valueOf("36648B"));
+
+        for (Square square : snake.getSquares())
+        {
+            gc.fillRect(square.getX(), square.getY(), SIZE, SIZE);
+        }
     }
 
     public void play()
@@ -126,24 +104,36 @@ public class Arena extends StackPane
 
     public void movement()
     {
-        this.setOnKeyPressed(event ->
+        setOnKeyPressed(event ->
         {
-            if (event.getCode() == KeyCode.UP && currentDirection != Directions.DOWN)
+            if (event.getCode() == KeyCode.UP && snake.currentDirection != Directions.DOWN)
             {
-                currentDirection = Directions.UP;
+                snake.setNewDirection(Directions.UP);
             }
-            if (event.getCode() == KeyCode.DOWN && currentDirection != Directions.UP)
+            if (event.getCode() == KeyCode.DOWN && snake.currentDirection != Directions.UP)
             {
-                currentDirection = Directions.DOWN;
+                snake.setNewDirection(Directions.DOWN);
+
             }
-            if (event.getCode() == KeyCode.LEFT && currentDirection != Directions.RIGHT)
+            if (event.getCode() == KeyCode.LEFT && snake.currentDirection != Directions.RIGHT)
             {
-                currentDirection = Directions.LEFT;
+                snake.setNewDirection(Directions.LEFT);
             }
-            if (event.getCode() == KeyCode.RIGHT && currentDirection != Directions.LEFT)
+            if (event.getCode() == KeyCode.RIGHT && snake.currentDirection != Directions.LEFT)
             {
-                currentDirection = Directions.RIGHT;
+                snake.setNewDirection(Directions.RIGHT);
             }
         });
+    }
+
+    public Square collision(Square square)
+    {
+        int x = square.getX();
+        int y = square.getY();
+        if (x >= squares.length) x = 0;
+        if (y >= squares.length) y = 0;
+        if (x < 0) x = squares.length - 1;
+        if (x < 0) y = squares.length - 1;
+        return new Square(x, y);
     }
 }

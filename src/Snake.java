@@ -1,4 +1,4 @@
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 
 /**
@@ -7,60 +7,93 @@ import java.util.LinkedList;
  */
 public class Snake
 {
-    private int length;
-    private LinkedList<Square> points = new LinkedList<>();
-    private int xMovement;
-    private int yMovement;
-    private int head;
+    private Square head;
+    private ArrayList<Square> squares;
+    Directions currentDirection, newDirection = Directions.LEFT;
+    private int xMovement = 0;
+    private int yMovement = 0;
 
-    public Snake(int x, int y)
+    public Snake(Square square)
     {
-        grow(x,y);
+        squares = new ArrayList<>();
+        squares.add(square);
+        head = square;
+        grow();
+        grow();
     }
 
-    public LinkedList<Square> getPoints()
+    public ArrayList<Square> getSquares()
     {
-        return points;
+        return squares;
     }
 
-    public void grow(int x, int y)
+    public void grow()
     {
-        points.add(new Square(x,y));
+        test(head.move(xMovement, yMovement));
     }
 
+    public void test(Square square)
+    {
+        head = square;
+        squares.add(head);
+    }
 
+    public void move()
+    {
+        if (head.getX() % 25 == 0 && head.getY() % 25 == 0)
+        {
+            currentDirection = newDirection;
+        }
+        switch (currentDirection)
+        {
+            case UP:
+                moveUp();
+                break;
+            case DOWN:
+                moveDown();
+                break;
+            case LEFT:
+                moveLeft();
+                break;
+            case RIGHT:
+                moveRight();
+                break;
+        }
+        test(head.move(xMovement, yMovement));
+        squares.remove(0);
+    }
 
     public void moveUp()
     {
         xMovement = 0;
-        yMovement = -1;
-        points.push(new Square(points.getFirst().getX(), points.getFirst().getY() - 25));
-        points.removeLast();
-
+        yMovement = -25;
     }
 
     public void moveDown()
     {
-        if (yMovement == -1) return;
         xMovement = 0;
-        yMovement = -1;
+        yMovement = 25;
     }
 
     public void moveRight()
     {
-        for (Square point : points)
-        {
-            point.setX(point.getY() + 1);
-        }
+        yMovement = 0;
+        xMovement = 25;
     }
 
     public void moveLeft()
     {
-        if (xMovement == -1) return;
-        xMovement = -1;
         yMovement = 0;
+        xMovement = -25;
     }
 
+    public void setNewDirection(Directions direction)
+    {
+        this.newDirection = direction;
+    }
 
-    //Grow
+    public Directions getCurrentDirection()
+    {
+        return currentDirection;
+    }
 }
