@@ -1,16 +1,34 @@
+import java.util.ArrayList;
+
+
 /**
  * @author Henrik
  * @since 1.0.0
  */
 public class Snake
 {
-
+    private int length;
+    private ArrayList<Square> points;
     private int xMovement;
     private int yMovement;
+    private int head;
 
+    public Snake(int x, int y)
+    {
+      grow(x,y);
+    }
 
+    private ArrayList<Square> getPoints()
+    {
+        return points;
+    }
 
-    //Movement
+    public void grow(int x, int y)
+    {
+        points.add(new Square(x,y));
+    }
+
+    
 
     private void moveUp()
     {
