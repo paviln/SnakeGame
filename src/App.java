@@ -19,7 +19,9 @@ public class App extends Application
     {
         this.ps = primaryStage;
         Menu menu = new Menu();
-        primaryStage.setScene(new Scene(menu, 500, 500));
+        Scene scene = new Scene(menu, 500, 500);
+        scene.getStylesheets().add("Styles.css");
+        primaryStage.setScene(scene);
         primaryStage.setTitle("SnakeGame");
         primaryStage.setResizable(false);
         primaryStage.show();

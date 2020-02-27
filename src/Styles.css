@@ -1,0 +1,20 @@
+/*class styles*/
+.pane {
+    -fx-background-color: black;
+    -fx-border-color: #808080;
+    -fx-border-width: 5px;
+    /*-fx-background-radius: 100;*/
+}
+
+.label {
+    -fx-text-fill: linear-gradient(#14ffe9, #ffeb3b, #ff00e0); /*rainbow colored text*/
+}
+
+.textField {
+    -fx-control-inner-background: #808080;
+}
+
+.button {
+    -fx-color: #808080;
+}
+
