@@ -7,9 +7,9 @@ import java.util.ArrayList;
  */
 public class Snake
 {
+    Directions currentDirection, newDirection = Directions.LEFT;
     private Square head;
     private ArrayList<Square> squares;
-    Directions currentDirection, newDirection = Directions.LEFT;
     private int xMovement = 0;
     private int yMovement = 0;
 
@@ -47,45 +47,26 @@ public class Snake
         switch (currentDirection)
         {
             case UP:
-                moveUp();
+                xMovement = 0;
+                yMovement = -25;
                 break;
             case DOWN:
-                moveDown();
+                xMovement = 0;
+                yMovement = 25;
                 break;
             case LEFT:
-                moveLeft();
+                yMovement = 0;
+                xMovement = 25;
                 break;
             case RIGHT:
-                moveRight();
+                yMovement = 0;
+                xMovement = -25;
                 break;
         }
         test(head.move(xMovement, yMovement));
         squares.remove(0);
     }
 
-    public void moveUp()
-    {
-        xMovement = 0;
-        yMovement = -25;
-    }
-
-    public void moveDown()
-    {
-        xMovement = 0;
-        yMovement = 25;
-    }
-
-    public void moveRight()
-    {
-        yMovement = 0;
-        xMovement = 25;
-    }
-
-    public void moveLeft()
-    {
-        yMovement = 0;
-        xMovement = -25;
-    }
 
     public void setNewDirection(Directions direction)
     {

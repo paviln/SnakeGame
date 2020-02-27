@@ -17,7 +17,6 @@ public class Arena extends StackPane
     static final int SIZE = 25;
     private Square[][] squares;
     private Player player;
-    private Snake snake;
     private Timeline gameLoop = new Timeline();
     private Canvas bg = new Canvas(SIZE * 15, SIZE * 15);
     private Canvas fg = new Canvas(SIZE * 15, SIZE * 15);
@@ -25,7 +24,6 @@ public class Arena extends StackPane
     public Arena(int width, int height, Player player)
     {
         squares = new Square[width / SIZE][height / SIZE];
-        this.snake = new Snake(new Square(width / 2, height / 2));
         this.getChildren().addAll(bg, fg);
         this.player = player;
         movement();
@@ -82,16 +80,16 @@ public class Arena extends StackPane
     {
         GraphicsContext gc = fg.getGraphicsContext2D();
 
-        for (Square square : snake.getSquares())
+        for (Square square : player.getSnake().getSquares())
         {
             gc.clearRect(square.getX(), square.getY(), SIZE, SIZE);
         }
 
-        snake.move();
+        player.getSnake().move();
 
         gc.setFill(Color.valueOf("36648B"));
 
-        for (Square square : snake.getSquares())
+        for (Square square : player.getSnake().getSquares())
         {
             gc.fillRect(square.getX(), square.getY(), SIZE, SIZE);
         }
@@ -106,22 +104,21 @@ public class Arena extends StackPane
     {
         setOnKeyPressed(event ->
         {
-            if (event.getCode() == KeyCode.UP && snake.currentDirection != Directions.DOWN)
+            if (event.getCode() == KeyCode.UP && player.getSnake().currentDirection != Directions.DOWN)
             {
-                snake.setNewDirection(Directions.UP);
+                player.moveUp();
             }
-            if (event.getCode() == KeyCode.DOWN && snake.currentDirection != Directions.UP)
+            if (event.getCode() == KeyCode.DOWN && player.getSnake().currentDirection != Directions.UP)
             {
-                snake.setNewDirection(Directions.DOWN);
-
+                player.moveDown();
             }
-            if (event.getCode() == KeyCode.LEFT && snake.currentDirection != Directions.RIGHT)
+            if (event.getCode() == KeyCode.LEFT && player.getSnake().currentDirection != Directions.RIGHT)
             {
-                snake.setNewDirection(Directions.LEFT);
+                player.moveLeft();
             }
-            if (event.getCode() == KeyCode.RIGHT && snake.currentDirection != Directions.LEFT)
+            if (event.getCode() == KeyCode.RIGHT && player.getSnake().currentDirection != Directions.LEFT)
             {
-                snake.setNewDirection(Directions.RIGHT);
+                player.moveRight();
             }
         });
     }

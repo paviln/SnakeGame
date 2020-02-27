@@ -36,7 +36,7 @@ public class Menu extends Pane {
         tfPlayerName.setFocusTraversable(false);
         //tfPlayerName.setStyle("-fx-border-color: LIGHTGREEN; -fx-fill: LIGHTGREY");
         //Create new player
-        Player player1 = new Player(tfPlayerName.getText(), 0);
+        Player player1 = new Player(tfPlayerName.getText(), 0, new Square(100,100));
 
         //Button play
         Button btnPlay = new Button();
