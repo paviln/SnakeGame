@@ -21,8 +21,8 @@ public class App extends Application
         Menu menu = new Menu();
         primaryStage.setScene(new Scene(menu, 500, 500));
         primaryStage.setTitle("SnakeGame");
+        primaryStage.setResizable(false);
         primaryStage.show();
-
     }
 
     public static Stage getPs() {

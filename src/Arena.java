@@ -31,7 +31,6 @@ public class Arena extends StackPane
         update();
         generateLevel();
         drawBoard();
-
     }
 
     private void generateLevel()
@@ -40,7 +39,7 @@ public class Arena extends StackPane
         {
             for (int x = 0; x < squares[y].length; x++)
             {
-                squares[x][y] = new Square((x + y) % 2 == 0, x * 25, y * 25);
+                squares[x][y] = new Square(x * SIZE, y * SIZE);
             }
         }
     }
@@ -48,14 +47,14 @@ public class Arena extends StackPane
     private void drawBoard()
     {
         GraphicsContext gc = bg.getGraphicsContext2D();
+        gc.setFill(Color.BLACK);
+        gc.fillRect(0,0,500,500);
         for (Square[] squares : squares)
         {
             for (Square square : squares)
             {
-                gc.setFill(Color.valueOf("#424242"));
-                gc.fillRect(square.getX(), square.getY(), SIZE, SIZE);
                 gc.setFill(Color.valueOf("#808080"));
-                gc.fillRect(square.getX() + 2, square.getY() + 2, SIZE - 2, SIZE - 2);
+                gc.fillRect(square.getX()+1, square.getY()+1, SIZE-1, SIZE-1);
             }
         }
     }
@@ -63,7 +62,7 @@ public class Arena extends StackPane
     private void setupGameLoop()
     {
         // Refresh 5 times pr. second
-        Duration frameRate = Duration.seconds(0.2);
+        Duration frameRate = Duration.millis(1000/8);
 
         // Update every frame
         KeyFrame frame = new KeyFrame(frameRate, "Game loop", event ->
@@ -74,6 +73,12 @@ public class Arena extends StackPane
         // Set game loop properties
         gameLoop.setCycleCount(Animation.INDEFINITE);
         gameLoop.getKeyFrames().add(frame);
+    }
+
+
+    public void play()
+    {
+        gameLoop.play();
     }
 
     private void update()
@@ -93,11 +98,6 @@ public class Arena extends StackPane
         {
             gc.fillRect(square.getX(), square.getY(), SIZE, SIZE);
         }
-    }
-
-    public void play()
-    {
-        gameLoop.play();
     }
 
     public void movement()

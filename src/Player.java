@@ -43,11 +43,11 @@ public class Player
 
     public void moveRight()
     {
-        snake.setNewDirection(Directions.LEFT);
+        snake.setNewDirection(Directions.RIGHT);
     }
 
     public void moveLeft()
     {
-        snake.setNewDirection(Directions.RIGHT);
+        snake.setNewDirection(Directions.LEFT);
     }
 }
