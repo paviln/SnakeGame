@@ -7,9 +7,9 @@ import java.util.ArrayList;
  */
 public class Snake
 {
-    Directions currentDirection = Directions.LEFT;
+    Directions currentDirection = Directions.PAUSE;
     private Square head;
-    private ArrayList<Square> squares;
+    private ArrayList<Square> squares; //rename to snakeSquares? Otherwise it has the same name as the 2D array in Arena.
     private int xMovement = 0;
     private int yMovement = 0;
 
@@ -56,6 +56,10 @@ public class Snake
                 break;
             case RIGHT:
                 xMovement = 25;
+                yMovement = 0;
+                break;
+            case PAUSE:
+                xMovement = 0;
                 yMovement = 0;
                 break;
         }

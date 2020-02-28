@@ -1,6 +1,8 @@
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -16,10 +18,19 @@ public class Food{
         //randomly locate an apple on the board
         public void locateApple() {
             ImageView viewApple = new ImageView("apple.PNG");
+
+            //locate the food according to the positions of squares
             Random random = new Random();
-            apple_x = random.nextInt(400);
-            apple_y = random.nextInt(400);
-            viewApple.setScaleX(0.2);           //TO DO: fit to size of square
+            List<Integer> foodPositions = new ArrayList<>();
+            for (int i = 0; i <= 350; i++) {
+                if (i % 25 == 0) {
+                    foodPositions.add(i);
+                }
+            }
+            apple_x = foodPositions.get(random.nextInt(foodPositions.size()));
+            apple_y = foodPositions.get(random.nextInt(foodPositions.size()));
+
+            viewApple.setScaleX(0.2);           //TODO: fit to size of square
             viewApple.setScaleY(0.2);
             viewApple.setLayoutX(apple_x);
             viewApple.setLayoutY(apple_y);
