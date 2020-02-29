@@ -36,7 +36,7 @@ public class Menu extends Pane {
         tfPlayerName.setFocusTraversable(false);
 
         //Create new player
-        Player player1 = new Player(tfPlayerName.getText(), 0, new Square(100,100));
+        Player player1 = new Player(tfPlayerName.getText(), 0, new Square(5,5));
 
         //Button play
         Button btnPlay = new Button();
@@ -51,7 +51,7 @@ public class Menu extends Pane {
                 //only if a player name was entered, it should be possible to press play
                 if (!tfPlayerName.getText().isEmpty()) {
                 //Change to arena scene
-                Arena arena = new Arena(500, 500, player1);
+                Arena arena = new Arena(player1);
                 App.getPs().setScene(new Scene(arena));
                 arena.play();
                 arena.requestFocus();

@@ -3,8 +3,11 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
@@ -12,19 +15,28 @@ import javafx.util.Duration;
  * @author Jens
  * @since 1.0.0
  */
-public class Arena extends StackPane
+public class Arena extends VBox
 {
-    static final int SIZE = 25;
+    static final int SIZE = 20;
+    private final int SQUARESIZE = 25;
     private Square[][] squares;
     private Player player;
     private Timeline gameLoop = new Timeline();
-    private Canvas bg = new Canvas(SIZE * 15, SIZE * 15);
-    private Canvas fg = new Canvas(SIZE * 15, SIZE * 15);
+    private Canvas bg = new Canvas(SQUARESIZE * SIZE, SQUARESIZE * SIZE);
+    private Canvas fg = new Canvas(SQUARESIZE * SIZE, SQUARESIZE * SIZE);
 
-    public Arena(int width, int height, Player player)
+    public Arena(Player player)
     {
-        squares = new Square[width / SIZE][height / SIZE];
-        this.getChildren().addAll(bg, fg);
+        HBox topBar = new HBox();
+        Label score = new Label("Score: ");
+        topBar.getChildren().add(score);
+        HBox bottomBar = new HBox();
+        Label level = new Label("Level: ");
+        bottomBar.getChildren().add(level);
+        StackPane field = new StackPane();
+        squares = new Square[SIZE][SIZE];
+        field.getChildren().addAll(bg, fg);
+        this.getChildren().addAll(topBar, field, bottomBar);
         this.player = player;
         movement();
         setupGameLoop();
@@ -35,11 +47,11 @@ public class Arena extends StackPane
 
     private void generateLevel()
     {
-        for (int y = 0; y < squares.length; y++)
+        for (int y = 0; y < SIZE; y++)
         {
-            for (int x = 0; x < squares[y].length; x++)
+            for (int x = 0; x < SIZE; x++)
             {
-                squares[x][y] = new Square(x * SIZE, y * SIZE);
+                squares[x][y] = new Square(x, y);
             }
         }
     }
@@ -54,7 +66,7 @@ public class Arena extends StackPane
             for (Square square : squares)
             {
                 gc.setFill(Color.valueOf("#808080"));
-                gc.fillRect(square.getX()+1, square.getY()+1, SIZE-1, SIZE-1);
+                gc.fillRect(square.getX()*SQUARESIZE, square.getY()*SQUARESIZE, SQUARESIZE-1, SQUARESIZE-1);
             }
         }
     }
@@ -75,7 +87,6 @@ public class Arena extends StackPane
         gameLoop.getKeyFrames().add(frame);
     }
 
-
     public void play()
     {
         gameLoop.play();
@@ -87,7 +98,7 @@ public class Arena extends StackPane
 
         for (Square square : player.getSnake().getSquares())
         {
-            gc.clearRect(square.getX(), square.getY(), SIZE, SIZE);
+            gc.clearRect(square.getX()*SQUARESIZE, square.getY()*SQUARESIZE, SQUARESIZE, SQUARESIZE);
         }
 
         player.getSnake().move();
@@ -96,7 +107,7 @@ public class Arena extends StackPane
 
         for (Square square : player.getSnake().getSquares())
         {
-            gc.fillRect(square.getX(), square.getY(), SIZE, SIZE);
+            gc.fillRect(square.getX()*SQUARESIZE, square.getY()*SQUARESIZE, SQUARESIZE, SQUARESIZE);
         }
     }
 
@@ -121,16 +132,5 @@ public class Arena extends StackPane
                 player.moveRight();
             }
         });
-    }
-
-    public Square collision(Square square)
-    {
-        int x = square.getX();
-        int y = square.getY();
-        if (x >= squares.length) x = 0;
-        if (y >= squares.length) y = 0;
-        if (x < 0) x = squares.length - 1;
-        if (x < 0) y = squares.length - 1;
-        return new Square(x, y);
     }
 }

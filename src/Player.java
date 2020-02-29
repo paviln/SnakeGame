@@ -17,7 +17,6 @@ public class Player
 
     public void updateScore()
     {
-
         //get current info from score class TODO
     }
 
@@ -33,21 +32,21 @@ public class Player
 
     public void moveUp()
     {
-        snake.setNewDirection(Directions.UP);
+        snake.setCurrentDirection(Directions.UP);
     }
 
     public void moveDown()
     {
-        snake.setNewDirection(Directions.DOWN);
+        snake.setCurrentDirection(Directions.DOWN);
     }
 
     public void moveRight()
     {
-        snake.setNewDirection(Directions.RIGHT);
+        snake.setCurrentDirection(Directions.RIGHT);
     }
 
     public void moveLeft()
     {
-        snake.setNewDirection(Directions.LEFT);
+        snake.setCurrentDirection(Directions.LEFT);
     }
 }
