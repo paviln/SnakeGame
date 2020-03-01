@@ -36,4 +36,8 @@ public class Square
     {
         return new Square(getX() + x, getY() + y);
     }
+
+    public boolean equals(Square o) {
+        return (this.getX()==o.getX() && this.getY()==o.getY());
+    }
 }

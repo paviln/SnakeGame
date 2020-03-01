@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class Snake
 {
     Directions currentDirection = Directions.LEFT;
-    private Square head;
+    Square head;
     private ArrayList<Square> squares;
     private int xMovement = 0;
     private int yMovement = 0;
@@ -72,4 +72,15 @@ public class Snake
     {
         return currentDirection;
     }
+
+    public boolean isSquareInSnake(Square testSquare){
+        boolean testResult = false;
+        for (Square square : squares) {
+            if(square.equals(testSquare)){
+                testResult = true;
+            }
+        };
+        return testResult;
+    }
+
 }

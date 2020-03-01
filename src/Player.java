@@ -5,7 +5,7 @@
 public class Player
 {
     private String name;
-    private int score;
+    public int score;
     private Snake snake;
 
     public Player(String name, int score, Square pos)

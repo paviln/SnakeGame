@@ -8,6 +8,8 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
+import java.util.Random;
+
 /**
  * @author Jens
  * @since 1.0.0
@@ -20,6 +22,8 @@ public class Arena extends StackPane
     private Timeline gameLoop = new Timeline();
     private Canvas bg = new Canvas(SIZE * 15, SIZE * 15);
     private Canvas fg = new Canvas(SIZE * 15, SIZE * 15);
+    private Food foodInArena;
+    private int foodCounter = 0;
 
     public Arena(int width, int height, Player player)
     {
@@ -28,8 +32,8 @@ public class Arena extends StackPane
         this.player = player;
         movement();
         setupGameLoop();
-        update();
         generateLevel();
+        update();
         drawBoard();
     }
 
@@ -62,7 +66,7 @@ public class Arena extends StackPane
     private void setupGameLoop()
     {
         // Refresh 5 times pr. second
-        Duration frameRate = Duration.millis(1000/8);
+        Duration frameRate = Duration.millis(5000/8);
 
         // Update every frame
         KeyFrame frame = new KeyFrame(frameRate, "Game loop", event ->
@@ -98,6 +102,35 @@ public class Arena extends StackPane
         {
             gc.fillRect(square.getX(), square.getY(), SIZE, SIZE);
         }
+
+        //if there is no food in Arena, then insert food
+        if(foodInArena == null ){
+            insertNewFood();
+        }
+
+        //check if snake head is on the food square
+        if(foodInArena.pos.equals(player.getSnake().head)){
+            foodInArena.handlePlayer(player);
+            insertNewFood();
+            foodCounter = foodCounter+1;
+            System.out.println("foodCounter: " + foodCounter);
+        }
+    }
+
+    //insert new food in a random square of the Arena
+    public void insertNewFood(){
+        int newXsquare = new Random().nextInt(14);
+        int newYsquare = new Random().nextInt(14);
+
+        //check if there is a snake square before inserting food
+        while (player.getSnake().isSquareInSnake(squares[newXsquare][newYsquare])) {
+            newXsquare = new Random().nextInt(14);
+            newYsquare = new Random().nextInt(14);
+        };
+
+        //draw food Image on fg canvas
+        foodInArena = new Food(squares[newXsquare][newYsquare]);
+        fg.getGraphicsContext2D().drawImage(foodInArena.foodImage,foodInArena.pos.getX(),foodInArena.pos.getY(),25,25);
     }
 
     public void movement()
