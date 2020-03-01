@@ -130,18 +130,18 @@ public class Arena extends VBox
 
     //insert new food in a random square of the Arena
     public void insertNewFood(){
-        int newXsquare = new Random().nextInt(14);
-        int newYsquare = new Random().nextInt(14);
+        int newXsquare = new Random().nextInt(SIZE-1);
+        int newYsquare = new Random().nextInt(SIZE-1);
 
         //check if there is a snake square before inserting food
         while (player.getSnake().isSquareInSnake(squares[newXsquare][newYsquare])) {
-            newXsquare = new Random().nextInt(14);
-            newYsquare = new Random().nextInt(14);
+            newXsquare = new Random().nextInt(SIZE-1);
+            newYsquare = new Random().nextInt(SIZE-1);
         };
 
         //draw food Image on fg canvas
         foodInArena = new Food(squares[newXsquare][newYsquare]);
-        fg.getGraphicsContext2D().drawImage(foodInArena.foodImage,foodInArena.pos.getX(),foodInArena.pos.getY(),25,25);
+        fg.getGraphicsContext2D().drawImage(foodInArena.foodImage,foodInArena.pos.getX()*SQUARESIZE,foodInArena.pos.getY()*SQUARESIZE,SQUARESIZE,SQUARESIZE);
     }
 
     public void movement()
