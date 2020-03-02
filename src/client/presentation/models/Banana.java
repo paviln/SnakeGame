@@ -1,3 +1,5 @@
+package client.presentation.models;
+
 import javafx.scene.image.Image;
 
 
@@ -10,7 +12,7 @@ public class Banana extends Food {
 
     public Banana(Square initPos){
         super(initPos);
-        foodImage = new Image("banana.PNG");
+        foodImage = new Image("client/presentation/images/banana.PNG");
     }
 
     //it is possible to make score depend on type of food

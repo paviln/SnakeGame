@@ -1,5 +1,7 @@
-import java.util.ArrayList;
+package client.presentation.models;
 
+import client.presentation.views.Arena;
+import java.util.ArrayList;
 
 /**
  * @author Henrik
@@ -8,7 +10,7 @@ import java.util.ArrayList;
 public class Snake
 {
     Directions currentDirection = Directions.LEFT;
-    private int SIZE = Arena.SIZE;
+    private int SIZE = Arena.getSize();
     private Square head;
     private ArrayList<Square> squares = new ArrayList<>();;
     private int xMovement = 0;

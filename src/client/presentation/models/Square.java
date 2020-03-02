@@ -1,3 +1,5 @@
+package client.presentation.models;
+
 /**
  * Represents a square, which used for grids.
  * @author Jens
@@ -9,7 +11,7 @@ public class Square
     private int x, y;
 
     /**
-     * Constructor of the Square class, it takes:
+     * Constructor of the client.presentation.models.Square class, it takes:
      * @param x
      * @param y
      */
@@ -59,7 +61,7 @@ public class Square
      * Make a duplicate square
      * @param x
      * @param y
-     * @return Square with new direction coordinates
+     * @return client.presentation.models.Square with new direction coordinates
      */
     public Square move(int x, int y)
     {

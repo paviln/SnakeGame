@@ -1,3 +1,5 @@
+package client.presentation.models;
+
 public enum Directions
 {
     UP,

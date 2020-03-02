@@ -1,8 +1,13 @@
+package client.presentation.views;
+
+import client.presentation.models.Directions;
+import client.presentation.models.Food;
+import client.presentation.models.Player;
+import client.presentation.models.Square;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
@@ -139,14 +144,14 @@ public class Arena extends BorderPane
             gc.fillRect(square.getX() * SQUARESIZE, square.getY() * SQUARESIZE, SQUARESIZE, SQUARESIZE);
         }
 
-        //if there is no food in Arena, then insert food
+        //if there is no food in client.presentation.views.Arena, then insert food
         if (foodInArena == null)
         {
             insertNewFood();
         }
 
         //check if snake head is on the food square
-        if (foodInArena.pos.equals(player.getSnake().getHead()))
+        if (foodInArena.getPos().equals(player.getSnake().getHead()))
         {
             foodInArena.handlePlayer(player);
             player.getSnake().grow();
@@ -155,7 +160,7 @@ public class Arena extends BorderPane
         }
     }
 
-    //insert new food in a random square of the Arena
+    //insert new food in a random square of the client.presentation.views.Arena
     public void insertNewFood()
     {
         int newXsquare = new Random().nextInt(SIZE - 1);
@@ -170,7 +175,7 @@ public class Arena extends BorderPane
 
         //draw food Image on fg canvas
         foodInArena = new Food(new Square(newXsquare, newYsquare));
-        fg.getGraphicsContext2D().drawImage(foodInArena.foodImage, foodInArena.pos.getX() * SQUARESIZE, foodInArena.pos.getY() * SQUARESIZE, SQUARESIZE, SQUARESIZE);
+        fg.getGraphicsContext2D().drawImage(foodInArena.getFoodImage(), foodInArena.getPos().getX() * SQUARESIZE, foodInArena.getPos().getY() * SQUARESIZE, SQUARESIZE, SQUARESIZE);
     }
 
     /**
@@ -181,22 +186,27 @@ public class Arena extends BorderPane
     {
         setOnKeyPressed(event ->
         {
-            if (event.getCode() == KeyCode.UP && player.getSnake().currentDirection != Directions.DOWN)
+            if (event.getCode() == KeyCode.UP && player.getSnake().getCurrentDirection() != Directions.DOWN)
             {
                 player.moveUp();
             }
-            if (event.getCode() == KeyCode.DOWN && player.getSnake().currentDirection != Directions.UP)
+            if (event.getCode() == KeyCode.DOWN && player.getSnake().getCurrentDirection() != Directions.UP)
             {
                 player.moveDown();
             }
-            if (event.getCode() == KeyCode.LEFT && player.getSnake().currentDirection != Directions.RIGHT)
+            if (event.getCode() == KeyCode.LEFT && player.getSnake().getCurrentDirection() != Directions.RIGHT)
             {
                 player.moveLeft();
             }
-            if (event.getCode() == KeyCode.RIGHT && player.getSnake().currentDirection != Directions.LEFT)
+            if (event.getCode() == KeyCode.RIGHT && player.getSnake().getCurrentDirection() != Directions.LEFT)
             {
                 player.moveRight();
             }
         });
+    }
+
+    public static int getSize()
+    {
+        return SIZE;
     }
 }

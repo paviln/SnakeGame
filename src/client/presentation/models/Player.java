@@ -1,3 +1,5 @@
+package client.presentation.models;
+
 /**
  * @author Jette
  * @since 1.0.0

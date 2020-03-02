@@ -1,3 +1,9 @@
+package client.presentation.views;
+
+import client.App;
+import client.presentation.controllers.MainController;
+import client.presentation.models.Player;
+import client.presentation.models.Square;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Bounds;
@@ -52,8 +58,7 @@ public class Menu extends Pane {
                 if (!tfPlayerName.getText().isEmpty()) {
                 //Change to arena scene
                 Arena arena = new Arena(player1);
-                App.getPs().setScene(new Scene(arena));
-                arena.play();
+                MainController.changeScene(new Scene(arena));
                 arena.requestFocus();
                 //only if a player name was entered, it should be possible to press play
                 }
