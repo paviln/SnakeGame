@@ -1,6 +1,8 @@
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
@@ -47,8 +49,11 @@ public class Arena extends BorderPane
     private void GUI()
     {
         HBox topBar = new HBox();
-        Label score = new Label("Score: ");
-        topBar.getChildren().add(score);
+        Label scoreText = new Label("Score: ");
+        Label scorePoints = new Label();
+        scorePoints.textProperty().bind(new SimpleIntegerProperty(player.getScore()).asString());
+
+        topBar.getChildren().addAll(scoreText, scorePoints);
         setTop(topBar);
 
         StackPane field = new StackPane();
@@ -118,16 +123,13 @@ public class Arena extends BorderPane
     {
         GraphicsContext gc = fg.getGraphicsContext2D();
 
-        for (Square square : player.getSnake().getSquares())
-        {
-            gc.clearRect(square.getX() * SQUARESIZE, square.getY() * SQUARESIZE, SQUARESIZE, SQUARESIZE);
-        }
+        gc.clearRect(player.getSnake().getSquares().get(0).getX() * SQUARESIZE, player.getSnake().getSquares().get(0).getY() * SQUARESIZE, SQUARESIZE, SQUARESIZE);
 
         player.getSnake().move();
 
         if (player.getSnake().getIsDead())
         {
-            System.out.println("yes");
+            System.out.println("dead");
         }
 
         gc.setFill(Color.valueOf("36648B"));
@@ -144,9 +146,10 @@ public class Arena extends BorderPane
         }
 
         //check if snake head is on the food square
-        if (foodInArena.pos.equals(player.getSnake().head))
+        if (foodInArena.pos.equals(player.getSnake().getHead()))
         {
             foodInArena.handlePlayer(player);
+            player.getSnake().grow();
             insertNewFood();
             foodCounter = foodCounter + 1;
         }
@@ -164,7 +167,6 @@ public class Arena extends BorderPane
             newXsquare = new Random().nextInt(SIZE - 1);
             newYsquare = new Random().nextInt(SIZE - 1);
         }
-        ;
 
         //draw food Image on fg canvas
         foodInArena = new Food(new Square(newXsquare, newYsquare));
@@ -173,7 +175,7 @@ public class Arena extends BorderPane
 
     /**
      * Listen for direction key pressed.
-     * Only alow non opposite direction, and move player.
+     * Only allow non opposite direction, and move player.
      */
     public void movement()
     {

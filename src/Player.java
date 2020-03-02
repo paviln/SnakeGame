@@ -5,13 +5,12 @@
 public class Player
 {
     private String name;
-    public int score;
+    private int score = 0;
     private Snake snake;
 
-    public Player(String name, int score, Square pos)
+    public Player(String name, Square pos)
     {
         this.name = name;
-        this.score = score;
         this.snake = new Snake(pos);
     }
 
@@ -48,5 +47,15 @@ public class Player
     public void moveLeft()
     {
         snake.setCurrentDirection(Directions.LEFT);
+    }
+
+    public int getScore()
+    {
+        return score;
+    }
+
+    public void setScore(int score)
+    {
+        this.score = score;
     }
 }

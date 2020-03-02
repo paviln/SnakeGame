@@ -7,46 +7,18 @@ import java.util.ArrayList;
  */
 public class Snake
 {
-    Directions currentDirection = Directions.PAUSE;
-    Square head;
-    private ArrayList<Square> squares; //rename to snakeSquares? Otherwise it has the same name as the 2D array in Arena.
+    Directions currentDirection = Directions.LEFT;
+    private int SIZE = Arena.SIZE;
+    private Square head;
+    private ArrayList<Square> squares = new ArrayList<>();;
     private int xMovement = 0;
     private int yMovement = 0;
-    private int SIZE = Arena.SIZE;
     private boolean isDead = false;
 
     public Snake(Square square)
     {
-        squares = new ArrayList<>();
         squares.add(square);
         head = square;
-        grow();
-        grow();
-        grow();
-        grow();
-        grow();
-        grow();
-        grow();
-        grow();
-        grow();
-        grow();
-        grow();
-        grow();
-        grow();
-        grow();
-        grow();
-        grow();
-
-    }
-
-    public ArrayList<Square> getSquares()
-    {
-        return squares;
-    }
-
-    public Square getHead()
-    {
-        return head;
     }
 
     public void grow()
@@ -57,14 +29,18 @@ public class Snake
     /**
      * Create a square with new coordinates and assign it to head.
      * Check if square already exsits(isDead).
+     *
      * @param square
      */
     public void slide(Square square)
     {
         square = outside(square);
+        if (squares.contains(square))
+        {
+            System.out.println("test");
+        }
         squares.add(square);
         head = square;
-        isDead = squares.contains(square);
     }
 
     /**
@@ -72,15 +48,11 @@ public class Snake
      */
     public void move()
     {
-        /**
-         * Set the current movement direction axis.
-         */
         switch (currentDirection)
         {
             case UP:
                 xMovement = 0;
                 yMovement = -1;
-                isDead = false;
                 break;
             case DOWN:
                 xMovement = 0;
@@ -118,32 +90,24 @@ public class Snake
         return new Square(x, y);
     }
 
-    private void collision()
+    public boolean isSquareInSnake(Square testSquare)
     {
-        for (int i = 0; i < squares.size() - 1; i++)
+        boolean testResult = false;
+        for (Square square : squares)
         {
-            if (squares.get(squares.size() - 1).getX() == squares.get(i).getX() && squares.get(squares.size() - 1).getY() == squares.get(i).getY())
+            if (square.equals(testSquare))
             {
-                System.out.println("yes");
+                testResult = true;
             }
         }
+        ;
+        return testResult;
     }
 
     public Directions getCurrentDirection()
     {
         return currentDirection;
     }
-
-    public boolean isSquareInSnake(Square testSquare){
-        boolean testResult = false;
-        for (Square square : squares) {
-            if(square.equals(testSquare)){
-                testResult = true;
-            }
-        };
-        return testResult;
-    }
-
 
     public void setCurrentDirection(Directions direction)
     {
@@ -153,5 +117,15 @@ public class Snake
     public Boolean getIsDead()
     {
         return isDead;
+    }
+
+    public Square getHead()
+    {
+        return head;
+    }
+
+    public ArrayList<Square> getSquares()
+    {
+        return squares;
     }
 }

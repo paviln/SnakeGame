@@ -36,7 +36,7 @@ public class Menu extends Pane {
         tfPlayerName.setFocusTraversable(false);
 
         //Create new player
-        Player player1 = new Player(tfPlayerName.getText(), 0, new Square(5,5));
+        Player player1 = new Player(tfPlayerName.getText(), new Square(5,5));
 
         //Button play
         Button btnPlay = new Button();

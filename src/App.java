@@ -9,9 +9,15 @@ import javafx.stage.Stage;
 public class App extends Application
 {
     static Stage ps;
+
     public static void main(String[] args)
     {
         launch(args);
+    }
+
+    public static Stage getPs()
+    {
+        return ps;
     }
 
     @Override
@@ -25,9 +31,5 @@ public class App extends Application
         primaryStage.setTitle("SnakeGame");
         primaryStage.setResizable(false);
         primaryStage.show();
-    }
-
-    public static Stage getPs() {
-        return ps;
     }
 }
