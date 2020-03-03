@@ -37,9 +37,12 @@ public class Snake
     public void slide(Square square)
     {
         square = outside(square);
-        if (squares.contains(square))
+        for (Square s : squares)
         {
-            System.out.println("test");
+            if (s.getX() == square.getX() && s.getY() == square.getY())
+            {
+                isDead = true;
+            }
         }
         squares.add(square);
         head = square;
@@ -119,6 +122,11 @@ public class Snake
     public Boolean getIsDead()
     {
         return isDead;
+    }
+
+    public void setIsDead(Boolean status)
+    {
+        this.isDead = status;
     }
 
     public Square getHead()

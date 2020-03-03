@@ -1,5 +1,6 @@
 package client.presentation.views;
 
+import client.presentation.controllers.MainController;
 import client.presentation.models.Directions;
 import client.presentation.models.Food;
 import client.presentation.models.Player;
@@ -8,13 +9,17 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
@@ -43,9 +48,9 @@ public class Arena extends BorderPane
     {
         this.player = player;
         GUI();
+        setupGameLoop();
         drawField();
         movement();
-        setupGameLoop();
     }
 
     /**
@@ -128,6 +133,14 @@ public class Arena extends BorderPane
     {
         GraphicsContext gc = fg.getGraphicsContext2D();
 
+        if (player.getSnake().getIsDead())
+        {
+            gc.clearRect(0, 0, SQUARESIZE*SIZE, SQUARESIZE*SIZE);
+            stop();
+            player.getSnake().setIsDead(false);
+            gameOver();
+        }
+
         gc.clearRect(player.getSnake().getSquares().get(0).getX() * SQUARESIZE, player.getSnake().getSquares().get(0).getY() * SQUARESIZE, SQUARESIZE, SQUARESIZE);
 
         player.getSnake().move();
@@ -208,5 +221,25 @@ public class Arena extends BorderPane
     public static int getSize()
     {
         return SIZE;
+    }
+
+    private void gameOver()
+    {
+        VBox options = new VBox();
+        options.setAlignment(Pos.CENTER);
+        Button play = new Button("Play Again!");
+        setCenter(new Label("2"));
+
+        options.getChildren().addAll(play);
+
+        this.setCenter(options);
+
+        play.setOnAction(event ->
+        {
+            Menu menu = new Menu();
+            Scene scene = new Scene(menu, 500,500);
+            scene.getStylesheets().add("Styles.css");
+            MainController.changeScene(scene);
+        });
     }
 }
