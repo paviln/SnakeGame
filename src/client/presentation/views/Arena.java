@@ -51,6 +51,7 @@ public class Arena extends BorderPane
         setupGameLoop();
         drawField();
         movement();
+        respawn();
     }
 
     /**
@@ -124,6 +125,24 @@ public class Arena extends BorderPane
     public void stop()
     {
         gameLoop.stop();
+    }
+
+    /**
+     * Construct the respawn loop
+     */
+    private void respawn()
+    {
+        Timeline respawnLoop = new Timeline();
+        Duration frameRate = Duration.seconds(5);
+        KeyFrame frame = new KeyFrame(frameRate, "Game loop", event ->
+        {
+            GraphicsContext gc = fg.getGraphicsContext2D();
+            gc.clearRect(foodInArena.getPos().getX()*SQUARESIZE, foodInArena.getPos().getY()*SQUARESIZE, SQUARESIZE, SQUARESIZE);
+            insertNewFood();
+        });
+        respawnLoop.setCycleCount(Animation.INDEFINITE);
+        respawnLoop.getKeyFrames().add(frame);
+        respawnLoop.play();
     }
 
     /**
