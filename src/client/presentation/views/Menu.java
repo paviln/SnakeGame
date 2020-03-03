@@ -60,6 +60,7 @@ public class Menu extends Pane {
                 Arena arena = new Arena(player1);
                 MainController.changeScene(new Scene(arena));
                 arena.requestFocus();
+                arena.play();
                 //only if a player name was entered, it should be possible to press play
                 }
             }
