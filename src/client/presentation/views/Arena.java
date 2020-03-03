@@ -1,10 +1,7 @@
 package client.presentation.views;
 
 import client.presentation.controllers.MainController;
-import client.presentation.models.Directions;
-import client.presentation.models.Food;
-import client.presentation.models.Player;
-import client.presentation.models.Square;
+import client.presentation.models.*;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -37,7 +34,6 @@ public class Arena extends BorderPane
     private Timeline gameLoop = new Timeline();
     private Canvas bg, fg;
     private Food foodInArena;
-    private int foodCounter = 0;
 
     /**
      * Constructor
@@ -174,11 +170,13 @@ public class Arena extends BorderPane
             gc.fillRect(square.getX() * SQUARESIZE, square.getY() * SQUARESIZE, SQUARESIZE, SQUARESIZE);
         }
 
+
         //if there is no food in client.presentation.views.Arena, then insert food
         if (foodInArena == null)
         {
             insertNewFood();
         }
+
 
         //check if snake head is on the food square
         if (foodInArena.getPos().equals(player.getSnake().getHead()))
@@ -186,11 +184,14 @@ public class Arena extends BorderPane
             foodInArena.handlePlayer(player);
             player.getSnake().grow();
             insertNewFood();
-            foodCounter = foodCounter + 1;
         }
     }
 
-    //insert new food in a random square of the client.presentation.views.Arena
+
+
+    /**
+     * insert new food in a random square of the client.presentation.views.Arena
+     */
     public void insertNewFood()
     {
         int newXsquare = new Random().nextInt(SIZE - 1);
@@ -203,8 +204,19 @@ public class Arena extends BorderPane
             newYsquare = new Random().nextInt(SIZE - 1);
         }
 
-        //draw food Image on fg canvas
-        foodInArena = new Food(new Square(newXsquare, newYsquare));
+
+        //draw random food Image on fg canvas
+        switch (new Random().nextInt(3)){
+            case 0:
+                foodInArena = new Food(new Square(newXsquare, newYsquare));
+                break;
+            case 1:
+                foodInArena = new Orange(new Square(newXsquare, newYsquare));
+                break;
+            case 2:
+                foodInArena = new Banana(new Square(newXsquare, newYsquare));
+                break;
+        }
         fg.getGraphicsContext2D().drawImage(foodInArena.getFoodImage(), foodInArena.getPos().getX() * SQUARESIZE, foodInArena.getPos().getY() * SQUARESIZE, SQUARESIZE, SQUARESIZE);
     }
 
