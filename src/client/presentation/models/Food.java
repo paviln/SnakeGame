@@ -21,9 +21,9 @@ public class Food
     }
 
     //handle score
-    public void handlePlayer(Player p)
+    public void handlePlayer(Player player)
     {
-        p.setScore(p.getScore() + 1);
+        player.setScore(player.getScore() + 1);
     }
 
     //to handle velocity or size of client.presentation.models.Snake; depending on type of food

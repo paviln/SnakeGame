@@ -16,10 +16,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
@@ -59,12 +56,21 @@ public class Arena extends BorderPane
      */
     private void GUI()
     {
-        HBox topBar = new HBox();
+        AnchorPane topBar = new AnchorPane();
+        HBox score = new HBox();
         Label scoreText = new Label("Score: ");
         Label scorePoints = new Label();
-        scorePoints.textProperty().bind(new SimpleIntegerProperty(player.getScore()).asString());
+        scorePoints.textProperty().bind(player.scoreProperty().asString());
+        score.getChildren().addAll(scoreText, scorePoints);
 
-        topBar.getChildren().addAll(scoreText, scorePoints);
+        HBox level = new HBox();
+        Label levelText = new Label("Level: ");
+        Label levelPoints = new Label();
+        levelPoints.textProperty().bind(player.scoreProperty().multiply(100).asString());
+        level.getChildren().addAll(levelText, levelPoints);
+        topBar.getChildren().addAll(score, level);
+        AnchorPane.setLeftAnchor(score,0.0);
+        AnchorPane.setRightAnchor(level,0.0);
         setTop(topBar);
 
         StackPane field = new StackPane();
@@ -72,11 +78,6 @@ public class Arena extends BorderPane
         fg = new Canvas(SQUARESIZE * SIZE, SQUARESIZE * SIZE);
         field.getChildren().addAll(bg, fg);
         setCenter(field);
-
-        HBox bottomBar = new HBox();
-        Label level = new Label("Level: ");
-        bottomBar.getChildren().add(level);
-        setBottom(bottomBar);
     }
 
     /**
@@ -163,11 +164,6 @@ public class Arena extends BorderPane
         gc.clearRect(player.getSnake().getSquares().get(0).getX() * SQUARESIZE, player.getSnake().getSquares().get(0).getY() * SQUARESIZE, SQUARESIZE, SQUARESIZE);
 
         player.getSnake().move();
-
-        if (player.getSnake().getIsDead())
-        {
-            System.out.println("dead");
-        }
 
         gc.setFill(Color.valueOf("36648B"));
 

@@ -1,5 +1,8 @@
 package client.presentation.models;
 
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+
 /**
  * @author Jette
  * @since 1.0.0
@@ -7,7 +10,7 @@ package client.presentation.models;
 public class Player
 {
     private String name;
-    private int score = 0;
+    private IntegerProperty score = new SimpleIntegerProperty(0);
     private Snake snake;
 
     public Player(String name, Square pos)
@@ -53,11 +56,15 @@ public class Player
 
     public int getScore()
     {
-        return score;
+        return score.get();
     }
 
     public void setScore(int score)
     {
-        this.score = score;
+        this.score.set(score);
+    }
+    public IntegerProperty scoreProperty()
+    {
+        return score;
     }
 }
