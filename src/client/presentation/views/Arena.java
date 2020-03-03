@@ -20,6 +20,9 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
+import javax.sound.sampled.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.Random;
 
 /**
@@ -115,8 +118,7 @@ public class Arena extends BorderPane
     /**
      * Start the game loop.
      */
-    public void play()
-    {
+    public void play() {
         gameLoop.play();
     }
 

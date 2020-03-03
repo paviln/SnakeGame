@@ -14,6 +14,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.animation.AnimationTimer;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import java.io.File;
 
 /**
  * @author Jette
@@ -66,10 +69,17 @@ public class Menu extends Pane {
             }
         });
 
+        //background music
+        String path = new File("src/LippsIncFunkyTown.mp3").getAbsolutePath();
+        Media musicFile = new Media(new File(path).toURI().toString());
+        MediaPlayer mediaPlayer = new MediaPlayer(musicFile);
+        mediaPlayer.setAutoPlay(true);
+        mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+        mediaPlayer.setVolume(0.1);
+
         this.getChildren().addAll(tfPlayerName, btnPlay, label1, label2);
 
         Bounds bounds = this.getBoundsInLocal();
-        System.out.println(bounds);
 
         new AnimationTimer() {
 
