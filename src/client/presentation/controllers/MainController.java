@@ -12,8 +12,9 @@ public class MainController
 
     public MainController(Stage ps)
     {
+        Menu menu = new Menu();
         primaryStage = ps;
-        Scene scene = new Scene(new Menu(), WIDTH, HEIGHT);
+        Scene scene = new Scene(menu, WIDTH, HEIGHT);
         scene.getStylesheets().add("Styles.css");
         primaryStage.setScene(scene);
         primaryStage.setTitle("SnakeGame");

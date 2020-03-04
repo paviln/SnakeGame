@@ -23,6 +23,7 @@ import java.io.File;
  * @since 1.0.0
  */
 public class Menu extends Pane {
+    MediaPlayer mediaPlayer;
 
     public Menu()
     {
@@ -71,7 +72,7 @@ public class Menu extends Pane {
         //background music
         String path = new File("src/LippsIncFunkyTown.mp3").getAbsolutePath();
         Media musicFile = new Media(new File(path).toURI().toString());
-        MediaPlayer mediaPlayer = new MediaPlayer(musicFile);
+        mediaPlayer = new MediaPlayer(musicFile);
         mediaPlayer.setAutoPlay(true);
         mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
         mediaPlayer.setVolume(0.1);

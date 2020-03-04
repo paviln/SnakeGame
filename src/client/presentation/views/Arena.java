@@ -43,7 +43,7 @@ public class Arena extends BorderPane
 
         setupGameLoop();
         respawn();
-        init();
+        arenaGUI();
     }
 
     public static int getSize()
@@ -51,7 +51,7 @@ public class Arena extends BorderPane
         return SIZE;
     }
 
-    private void init()
+    private void arenaGUI()
     {
         GUI();
         drawField();
@@ -165,7 +165,6 @@ public class Arena extends BorderPane
         if (player.getSnake().getIsDead())
         {
             stop();
-            foodInArena = null;
             gameOver();
         }
 
@@ -275,8 +274,9 @@ public class Arena extends BorderPane
         restartBtn.setOnAction(event ->
         {
             player = new Player(player.getName(), new Square(10, 10));
-            init();
+            arenaGUI();
             play();
+            insertNewFood();
         });
         menuBtn.setOnAction(event ->
         {
