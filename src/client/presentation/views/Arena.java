@@ -5,7 +5,6 @@ import client.presentation.models.*;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -17,9 +16,6 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
-import javax.sound.sampled.*;
-import java.io.File;
-import java.io.IOException;
 import java.util.Random;
 
 /**
@@ -32,6 +28,7 @@ public class Arena extends BorderPane
     private final int SQUARESIZE = 25;
     private Player player;
     private Timeline gameLoop = new Timeline();
+    Timeline respawnLoop = new Timeline();
     private Canvas bg, fg;
     private Food foodInArena;
 
@@ -43,11 +40,22 @@ public class Arena extends BorderPane
     public Arena(Player player)
     {
         this.player = player;
-        GUI();
+
         setupGameLoop();
+        respawn();
+        init();
+    }
+
+    public static int getSize()
+    {
+        return SIZE;
+    }
+
+    private void init()
+    {
+        GUI();
         drawField();
         movement();
-        respawn();
     }
 
     /**
@@ -68,8 +76,8 @@ public class Arena extends BorderPane
         levelPoints.textProperty().bind(player.scoreProperty().multiply(100).asString());
         level.getChildren().addAll(levelText, levelPoints);
         topBar.getChildren().addAll(score, level);
-        AnchorPane.setLeftAnchor(score,0.0);
-        AnchorPane.setRightAnchor(level,0.0);
+        AnchorPane.setLeftAnchor(score, 0.0);
+        AnchorPane.setRightAnchor(level, 0.0);
         setTop(topBar);
 
         StackPane field = new StackPane();
@@ -114,8 +122,11 @@ public class Arena extends BorderPane
     /**
      * Start the game loop.
      */
-    public void play() {
+    public void play()
+    {
+        requestFocus();
         gameLoop.play();
+        respawnLoop.play();
     }
 
     /**
@@ -124,6 +135,7 @@ public class Arena extends BorderPane
     public void stop()
     {
         gameLoop.stop();
+        respawnLoop.stop();
     }
 
     /**
@@ -131,12 +143,11 @@ public class Arena extends BorderPane
      */
     private void respawn()
     {
-        Timeline respawnLoop = new Timeline();
         Duration frameRate = Duration.seconds(5);
         KeyFrame frame = new KeyFrame(frameRate, "Game loop", event ->
         {
             GraphicsContext gc = fg.getGraphicsContext2D();
-            gc.clearRect(foodInArena.getPos().getX()*SQUARESIZE, foodInArena.getPos().getY()*SQUARESIZE, SQUARESIZE, SQUARESIZE);
+            gc.clearRect(foodInArena.getPos().getX() * SQUARESIZE, foodInArena.getPos().getY() * SQUARESIZE, SQUARESIZE, SQUARESIZE);
             insertNewFood();
         });
         respawnLoop.setCycleCount(Animation.INDEFINITE);
@@ -153,9 +164,8 @@ public class Arena extends BorderPane
 
         if (player.getSnake().getIsDead())
         {
-            gc.clearRect(0, 0, SQUARESIZE*SIZE, SQUARESIZE*SIZE);
             stop();
-            player.getSnake().setIsDead(false);
+            foodInArena = null;
             gameOver();
         }
 
@@ -187,8 +197,6 @@ public class Arena extends BorderPane
         }
     }
 
-
-
     /**
      * insert new food in a random square of the client.presentation.views.Arena
      */
@@ -206,7 +214,8 @@ public class Arena extends BorderPane
 
 
         //draw random food Image on fg canvas
-        switch (new Random().nextInt(3)){
+        switch (new Random().nextInt(3))
+        {
             case 0:
                 foodInArena = new Food(new Square(newXsquare, newYsquare));
                 break;
@@ -247,28 +256,34 @@ public class Arena extends BorderPane
         });
     }
 
-    public static int getSize()
-    {
-        return SIZE;
-    }
-
     private void gameOver()
     {
         VBox options = new VBox();
         options.setAlignment(Pos.CENTER);
-        Button play = new Button("Play Again!");
-        setCenter(new Label("2"));
+        Button restartBtn = new Button("Restart");
+        Button menuBtn = new Button("Menu");
+        Button quitBtn = new Button("Quit");
 
-        options.getChildren().addAll(play);
+        options.getChildren().addAll(restartBtn, menuBtn,quitBtn);
 
         this.setCenter(options);
 
-        play.setOnAction(event ->
+        restartBtn.setOnAction(event ->
+        {
+            player = new Player(player.getName(), new Square(10, 10));
+            init();
+            play();
+        });
+        menuBtn.setOnAction(event ->
         {
             Menu menu = new Menu();
             Scene scene = new Scene(menu, 500,500);
             scene.getStylesheets().add("Styles.css");
             MainController.changeScene(scene);
+        });
+        quitBtn.setOnAction(event ->
+        {
+            System.exit(0);
         });
     }
 }

@@ -24,6 +24,11 @@ public class Player
         //get current info from score class TODO
     }
 
+    public String getName()
+    {
+        return name;
+    }
+
     public void setName(String name)
     {
         this.name = name;
