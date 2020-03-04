@@ -267,7 +267,9 @@ public class Arena extends BorderPane
         Button quitBtn = new Button("Quit");
 
         options.getChildren().addAll(restartBtn, menuBtn,quitBtn);
+        options.getStyleClass().addAll("pane", "label", "textField", "button", "vbox");
 
+        this.getStylesheets().add("Styles.css");
         this.setCenter(options);
 
         restartBtn.setOnAction(event ->
