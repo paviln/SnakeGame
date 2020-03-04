@@ -219,7 +219,7 @@ public class Arena extends BorderPane
         switch (new Random().nextInt(3))
         {
             case 0:
-                foodInArena = new Food(new Square(newXsquare, newYsquare));
+                foodInArena = new Apple(new Square(newXsquare, newYsquare));
                 break;
             case 1:
                 foodInArena = new Orange(new Square(newXsquare, newYsquare));

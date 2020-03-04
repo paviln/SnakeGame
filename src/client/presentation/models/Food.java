@@ -9,15 +9,12 @@ import javafx.scene.image.Image;
  */
 public class Food
 {
-
     Square pos;
     Image foodImage;
-
 
     public Food(Square initPos)
     {
         pos = initPos;
-        foodImage = new Image("client/presentation/images/apple.PNG");
     }
 
     //handle score
@@ -37,10 +34,6 @@ public class Food
         return foodImage;
     }
 
-    public void setFoodImage(Image foodImage)
-    {
-        this.foodImage = foodImage;
-    }
 
     public Square getPos()
     {
