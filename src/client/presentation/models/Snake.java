@@ -1,6 +1,7 @@
 package client.presentation.models;
 
 import client.presentation.views.Arena;
+
 import java.util.ArrayList;
 
 /**
@@ -12,7 +13,8 @@ public class Snake
     Directions currentDirection = Directions.LEFT;
     private int SIZE = Arena.getSize();
     private Square head;
-    private ArrayList<Square> squares = new ArrayList<>();;
+    private ArrayList<Square> squares = new ArrayList<>();
+    ;
     private int xMovement = 0;
     private int yMovement = 0;
     private boolean isDead = false;
@@ -36,14 +38,7 @@ public class Snake
      */
     public void slide(Square square)
     {
-        square = outside(square);
-        for (Square s : squares)
-        {
-            if (s.getX() == square.getX() && s.getY() == square.getY())
-            {
-                isDead = true;
-            }
-        }
+        square = collision(square);
         squares.add(square);
         head = square;
     }
@@ -78,20 +73,35 @@ public class Snake
         }
 
         /**
-         *
+         * Move head in direction and remove first element
          */
         slide(head.move(xMovement, yMovement));
         squares.remove(0);
     }
 
-    public Square outside(Square square)
+    /**
+     * Detect if the head collides with border or itself.
+     *
+     * @param square
+     * @return
+     */
+    public Square collision(Square square)
     {
         int x = square.getX();
         int y = square.getY();
-        if (x >= SIZE) x = 0;
-        if (y >= SIZE) y = 0;
-        if (x < 0) x = SIZE - 1;
-        if (y < 0) y = SIZE - 1;
+
+        if (x >= SIZE || x < 0 || y >= SIZE || y < 0)
+        {
+            isDead = true;
+        }
+
+        for (Square s : squares)
+        {
+            if (s.getX() == x && s.getY() == y)
+            {
+                isDead = true;
+            }
+        }
         return new Square(x, y);
     }
 
