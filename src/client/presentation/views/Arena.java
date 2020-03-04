@@ -193,6 +193,8 @@ public class Arena extends BorderPane
         {
             foodInArena.handlePlayer(player);
             player.getSnake().grow();
+            respawnLoop.stop();
+            respawnLoop.play();
             insertNewFood();
         }
     }
