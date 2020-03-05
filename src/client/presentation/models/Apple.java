@@ -1,5 +1,6 @@
 package client.presentation.models;
 
+import client.presentation.views.Arena;
 import javafx.scene.image.Image;
 
 public class Apple extends Food

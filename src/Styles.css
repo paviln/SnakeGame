@@ -1,8 +1,9 @@
 /*class styles*/
 .pane {
-    -fx-background-color: black;
-    -fx-border-color: #808080;
+    -fx-background-color: #000000; /*black*/
+    -fx-border-color: #808080; /*grey*/
     -fx-border-width: 5px;
+    -fx-spacing: 10px;
 }
 
 .label {
@@ -15,11 +16,4 @@
 
 .button {
     -fx-color: #808080;
-    -fx-margin: 5px; /*new JC*/
-}
-
-.vbox {
-    -fx-background-color: black;
-    -fx-border-color: #808080;
-    -fx-border-width: 5px;
 }

@@ -23,6 +23,5 @@ public class Banana extends Food
     //to handle velocity or size of snake; depending on type of food
     public void handleSnake()
     {
-
     }
 }

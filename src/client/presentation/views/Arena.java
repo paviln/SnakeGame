@@ -69,6 +69,8 @@ public class Arena extends BorderPane
      */
     private void GUI() {
         AnchorPane topBar = new AnchorPane();
+        topBar.getStyleClass().addAll("pane", "label", "textField", "button");
+        topBar.getStylesheets().add("Styles.css");
         HBox score = new HBox();
         Label scoreText = new Label("Score: ");
         Label scorePoints = new Label();
@@ -82,7 +84,9 @@ public class Arena extends BorderPane
         level.getChildren().addAll(levelText, levelPoints);
         topBar.getChildren().addAll(score, level);
         AnchorPane.setLeftAnchor(score, 0.0);
+        AnchorPane.setTopAnchor(score,0.0);
         AnchorPane.setRightAnchor(level, 0.0);
+        AnchorPane.setTopAnchor(level,0.0);
         setTop(topBar);
 
         StackPane field = new StackPane();
@@ -316,7 +320,7 @@ public class Arena extends BorderPane
         Button quitBtn = new Button("Quit");
 
         options.getChildren().addAll(restartBtn, menuBtn, quitBtn);
-        options.getStyleClass().addAll("pane", "label", "textField", "button", "vbox");
+        options.getStyleClass().addAll("pane", "label", "textField", "button"); // deleted vbox
 
         this.getStylesheets().add("Styles.css");
         this.setCenter(options);
