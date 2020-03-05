@@ -11,7 +11,7 @@ public class Banana extends Food
     public Banana(Square initPos)
     {
         super(initPos);
-        foodImage = new Image("client/presentation/images/banana.PNG");
+        super.setFoodImage(new Image("client/presentation/images/banana.PNG"));
     }
 
     //it is possible to make score depend on type of food

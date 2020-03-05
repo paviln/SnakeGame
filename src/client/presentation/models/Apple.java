@@ -7,7 +7,7 @@ public class Apple extends Food
     public Apple(Square initPos)
     {
         super(initPos);
-        foodImage = new Image("client/presentation/images/apple.PNG");
+        super.setFoodImage(new Image("client/presentation/images/apple.PNG"));
     }
 
     //it is possible to make score depend on type of food

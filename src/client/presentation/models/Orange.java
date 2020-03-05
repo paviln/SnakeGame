@@ -11,7 +11,7 @@ public class Orange extends Food
     public Orange(Square initPos)
     {
         super(initPos);
-        foodImage = new Image("client/presentation/images/orange.PNG");
+        super.setFoodImage(new Image("client/presentation/images/orange.PNG"));
     }
 
     //it is possible to make score depend on type of food
