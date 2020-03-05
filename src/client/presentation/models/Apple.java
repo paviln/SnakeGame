@@ -8,6 +8,7 @@ public class Apple extends Food
     public Apple(Square initPos)
     {
         super(initPos);
+        setId(1);
         super.setFoodImage(new Image("client/presentation/images/apple.PNG"));
     }
 

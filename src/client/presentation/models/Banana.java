@@ -11,6 +11,7 @@ public class Banana extends Food
     public Banana(Square initPos)
     {
         super(initPos);
+        setId(3);
         super.setFoodImage(new Image("client/presentation/images/banana.PNG"));
     }
 

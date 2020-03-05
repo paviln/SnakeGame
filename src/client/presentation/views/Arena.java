@@ -18,6 +18,9 @@ import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
 
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.ScheduledExecutorService;
 
 /**
  * @author Jens
@@ -28,9 +31,8 @@ public class Arena extends BorderPane
     static final int SIZE = 20;
     private final int SQUARESIZE = 25;
     Timeline respawnLoop = new Timeline();
-    /**
-     * Called every frame, to update changes.
-     */
+    private static Timer timer;
+    long delay = 4000L;
     int angle = 0;
     int frames;
     private Player player;
@@ -53,7 +55,8 @@ public class Arena extends BorderPane
         arenaGUI();
     }
 
-    public static int getSize() {
+    public static int getSize()
+    {
         return SIZE;
     }
 
@@ -67,7 +70,8 @@ public class Arena extends BorderPane
     /**
      *
      */
-    private void GUI() {
+    private void GUI()
+    {
         AnchorPane topBar = new AnchorPane();
         topBar.getStyleClass().addAll("pane", "label", "textField", "button");
         topBar.getStylesheets().add("Styles.css");
@@ -84,9 +88,9 @@ public class Arena extends BorderPane
         level.getChildren().addAll(levelText, levelPoints);
         topBar.getChildren().addAll(score, level);
         AnchorPane.setLeftAnchor(score, 0.0);
-        AnchorPane.setTopAnchor(score,0.0);
+        AnchorPane.setTopAnchor(score, 0.0);
         AnchorPane.setRightAnchor(level, 0.0);
-        AnchorPane.setTopAnchor(level,0.0);
+        AnchorPane.setTopAnchor(level, 0.0);
         setTop(topBar);
 
         StackPane field = new StackPane();
@@ -115,7 +119,7 @@ public class Arena extends BorderPane
     }
 
     /**
-     * Construct the game loop, with a refresh rate of 5 times pr. second.
+     * Construct the game loop.
      */
     private void setupGameLoop()
     {
@@ -127,6 +131,40 @@ public class Arena extends BorderPane
         gameLoop.setCycleCount(Animation.INDEFINITE);
         gameLoop.getKeyFrames().add(frame);
     }
+
+    /**
+     * Construct the game loop.
+     */
+    private void changeSpeed(double speed)
+    {
+        Duration frameRate = Duration.seconds(speed);
+        KeyFrame frame = new KeyFrame(frameRate, "Game loop", event ->
+        {
+            update();
+        });
+        gameLoop.stop();
+        gameLoop.getKeyFrames().setAll(frame);
+        gameLoop.play();
+    }
+
+    /**
+     * Set the refresh speed of game loop
+     * @param speed
+     */
+    private void speed(double speed)
+    {
+        TimerTask task = new TimerTask()
+        {
+            @Override
+            public void run()
+            {
+                changeSpeed(speed);
+            }
+        };
+        timer = new Timer();
+        timer.schedule(task, 4000);
+    }
+
 
     /**
      * Start the game loop.
@@ -243,6 +281,12 @@ public class Arena extends BorderPane
         //check if snake head is on the food square
         if (foodInArena.getPos().equals(player.getSnake().getHead()))
         {
+            if (foodInArena.getId() == 3)
+            {
+                changeSpeed(.075);
+
+                speed(0.15);
+            }
             foodInArena.handlePlayer(player);
             player.getSnake().grow();
             respawnLoop.stop();

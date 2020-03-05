@@ -9,6 +9,7 @@ import javafx.scene.image.Image;
  */
 public class Food
 {
+    private int id;
     private Square pos;
     private Image foodImage;
 
@@ -47,5 +48,15 @@ public class Food
     public void setPos(Square pos)
     {
         this.pos = pos;
+    }
+
+    public int getId()
+    {
+        return id;
+    }
+
+    public void setId(int id)
+    {
+        this.id = id;
     }
 }

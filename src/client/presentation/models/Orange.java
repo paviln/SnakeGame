@@ -11,6 +11,7 @@ public class Orange extends Food
     public Orange(Square initPos)
     {
         super(initPos);
+        setId(2);
         super.setFoodImage(new Image("client/presentation/images/orange.PNG"));
     }
 
