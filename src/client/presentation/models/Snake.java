@@ -10,15 +10,13 @@ import java.util.ArrayList;
  */
 public class Snake
 {
-    Directions currentDirection = Directions.PAUSE; // change left to pause
-    private int SIZE = Arena.getSize();
+    private Directions currentDirection = Directions.PAUSE; // change left to pause
+    private final int SIZE = Arena.getSize();
     private Square head;
     private ArrayList<Square> squares = new ArrayList<>();
-    ;
     private int xMovement = 0;
     private int yMovement = 0;
     private boolean isDead = false;
-    private boolean canDie = false;
 
     public Snake(Square square)
     {
@@ -37,7 +35,7 @@ public class Snake
      *
      * @param square
      */
-    public void slide(Square square)
+    private void slide(Square square)
     {
         square = collision(square);
         squares.add(square);
@@ -76,8 +74,11 @@ public class Snake
         /**
          * Move head in direction and remove first element
          */
-        slide(head.move(xMovement, yMovement));
-        squares.remove(0);
+        if (xMovement != 0 || yMovement != 0)
+        {
+            slide(head.move(xMovement, yMovement));
+            squares.remove(0);
+        }
     }
 
     /**
@@ -86,7 +87,7 @@ public class Snake
      * @param square
      * @return
      */
-    public Square collision(Square square)
+    private Square collision(Square square)
     {
         int x = square.getX();
         int y = square.getY();
@@ -96,15 +97,9 @@ public class Snake
             isDead = true;
         }
 
-        if (canDie)
+        if (isSquareInSnake(square))
         {
-            for (Square s : squares)
-            {
-                if (s.getX() == x && s.getY() == y)
-                {
-                    isDead = true;
-                }
-            }
+            isDead = true;
         }
         return new Square(x, y);
     }
@@ -119,7 +114,6 @@ public class Snake
                 testResult = true;
             }
         }
-        ;
         return testResult;
     }
 
@@ -151,9 +145,5 @@ public class Snake
     public ArrayList<Square> getSquares()
     {
         return squares;
-    }
-
-    public void setCanDie(boolean canDie) {
-        this.canDie = canDie;
     }
 }

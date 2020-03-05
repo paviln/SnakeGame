@@ -72,13 +72,13 @@ public class Arena extends BorderPane
         HBox score = new HBox();
         Label scoreText = new Label("Score: ");
         Label scorePoints = new Label();
-        scorePoints.textProperty().bind(player.scoreProperty().asString());
+        scorePoints.textProperty().bind(player.scoreProperty().multiply(100).asString());
         score.getChildren().addAll(scoreText, scorePoints);
 
         HBox level = new HBox();
         Label levelText = new Label("Level: ");
         Label levelPoints = new Label();
-        levelPoints.textProperty().bind(player.scoreProperty().multiply(100).asString());
+        levelPoints.textProperty().bind(player.scoreProperty().asString());
         level.getChildren().addAll(levelText, levelPoints);
         topBar.getChildren().addAll(score, level);
         AnchorPane.setLeftAnchor(score, 0.0);
@@ -288,7 +288,6 @@ public class Arena extends BorderPane
     {
         setOnKeyPressed(event ->
         {
-            player.getSnake().setCanDie(true);
             if (event.getCode() == KeyCode.UP && player.getSnake().getCurrentDirection() != Directions.DOWN)
             {
                 player.moveUp();

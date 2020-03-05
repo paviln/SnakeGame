@@ -19,11 +19,6 @@ public class Player
         this.snake = new Snake(pos);
     }
 
-    public void updateScore()
-    {
-        //get current info from score class TODO
-    }
-
     public String getName()
     {
         return name;
