@@ -46,8 +46,7 @@ public class Arena extends BorderPane
         arenaGUI();
     }
 
-    public static int getSize()
-    {
+    public static int getSize() {
         return SIZE;
     }
 
@@ -61,8 +60,7 @@ public class Arena extends BorderPane
     /**
      *
      */
-    private void GUI()
-    {
+    private void GUI() {
         AnchorPane topBar = new AnchorPane();
         HBox score = new HBox();
         Label scoreText = new Label("Score: ");
@@ -238,6 +236,7 @@ public class Arena extends BorderPane
     {
         setOnKeyPressed(event ->
         {
+            player.getSnake().setCanDie(true);
             if (event.getCode() == KeyCode.UP && player.getSnake().getCurrentDirection() != Directions.DOWN)
             {
                 player.moveUp();

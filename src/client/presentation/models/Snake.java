@@ -10,7 +10,7 @@ import java.util.ArrayList;
  */
 public class Snake
 {
-    Directions currentDirection = Directions.LEFT;
+    Directions currentDirection = Directions.PAUSE; // change left to pause
     private int SIZE = Arena.getSize();
     private Square head;
     private ArrayList<Square> squares = new ArrayList<>();
@@ -18,6 +18,7 @@ public class Snake
     private int xMovement = 0;
     private int yMovement = 0;
     private boolean isDead = false;
+    private boolean canDie = false;
 
     public Snake(Square square)
     {
@@ -95,11 +96,14 @@ public class Snake
             isDead = true;
         }
 
-        for (Square s : squares)
+        if (canDie)
         {
-            if (s.getX() == x && s.getY() == y)
+            for (Square s : squares)
             {
-                isDead = true;
+                if (s.getX() == x && s.getY() == y)
+                {
+                    isDead = true;
+                }
             }
         }
         return new Square(x, y);
@@ -147,5 +151,9 @@ public class Snake
     public ArrayList<Square> getSquares()
     {
         return squares;
+    }
+
+    public void setCanDie(boolean canDie) {
+        this.canDie = canDie;
     }
 }
