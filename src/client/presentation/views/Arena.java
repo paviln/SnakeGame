@@ -14,6 +14,7 @@ import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
 
 import java.util.Random;
@@ -26,11 +27,17 @@ public class Arena extends BorderPane
 {
     static final int SIZE = 20;
     private final int SQUARESIZE = 25;
+    Timeline respawnLoop = new Timeline();
+    /**
+     * Called every frame, to update changes.
+     */
+    int angle = 0;
+    int frames;
     private Player player;
     private Timeline gameLoop = new Timeline();
-    Timeline respawnLoop = new Timeline();
     private Canvas bg, fg;
     private Food foodInArena;
+    private boolean insaneMode = false;
 
     /**
      * Constructor
@@ -108,7 +115,7 @@ public class Arena extends BorderPane
      */
     private void setupGameLoop()
     {
-        Duration frameRate = Duration.millis(1000 / 8);
+        Duration frameRate = Duration.seconds(.15);
         KeyFrame frame = new KeyFrame(frameRate, "Game loop", event ->
         {
             update();
@@ -153,20 +160,64 @@ public class Arena extends BorderPane
         respawnLoop.play();
     }
 
-    /**
-     * Called every frame, to update changes.
-     */
+    private int randomTurn()
+    {
+        int value = 0;
+        int rnd = new Random().nextInt(3);
+
+        switch (rnd)
+        {
+            case 0:
+                value = 90;
+                break;
+            case 1:
+                value = 180;
+                break;
+            case 2:
+                value = 270;
+                break;
+        }
+        return value;
+    }
+
     private void update()
     {
         GraphicsContext gc = fg.getGraphicsContext2D();
+
+        gc.clearRect(player.getSnake().getSquares().get(0).getX() * SQUARESIZE, player.getSnake().getSquares().get(0).getY() * SQUARESIZE, SQUARESIZE, SQUARESIZE);
 
         if (player.getSnake().getIsDead())
         {
             stop();
             gameOver();
+            insaneMode = false;
         }
 
-        gc.clearRect(player.getSnake().getSquares().get(0).getX() * SQUARESIZE, player.getSnake().getSquares().get(0).getY() * SQUARESIZE, SQUARESIZE, SQUARESIZE);
+        if (player.getScore() % 5 == 0 && player.getScore() != 0 && insaneMode == false)
+        {
+            frames = 0;
+            insaneMode = true;
+            angle = randomTurn();
+        }
+
+        if (insaneMode && frames == 0)
+        {
+            Rotate r = new Rotate(angle, 250, 250);
+            gc.setTransform(r.getMxx(), r.getMyx(), r.getMxy(), r.getMyy(), r.getTx(), r.getTy());
+            gc.clearRect(0, 0, SIZE * SQUARESIZE, SIZE * SQUARESIZE);
+            fg.getGraphicsContext2D().drawImage(foodInArena.getFoodImage(), foodInArena.getPos().getX() * SQUARESIZE, foodInArena.getPos().getY() * SQUARESIZE, SQUARESIZE, SQUARESIZE);
+        }
+        if (insaneMode && frames == 15)
+        {
+            Rotate r = new Rotate(0, 250, 250);
+            gc.setTransform(r.getMxx(), r.getMyx(), r.getMxy(), r.getMyy(), r.getTx(), r.getTy());
+            gc.clearRect(0, 0, SIZE * SQUARESIZE, SIZE * SQUARESIZE);
+            fg.getGraphicsContext2D().drawImage(foodInArena.getFoodImage(), foodInArena.getPos().getX() * SQUARESIZE, foodInArena.getPos().getY() * SQUARESIZE, SQUARESIZE, SQUARESIZE);
+
+            frames = 0;
+            insaneMode = false;
+            player.setScore(player.getScore() + 1);
+        }
 
         player.getSnake().move();
 
@@ -194,6 +245,7 @@ public class Arena extends BorderPane
             respawnLoop.play();
             insertNewFood();
         }
+        frames++;
     }
 
     /**
@@ -264,7 +316,7 @@ public class Arena extends BorderPane
         Button menuBtn = new Button("Menu");
         Button quitBtn = new Button("Quit");
 
-        options.getChildren().addAll(restartBtn, menuBtn,quitBtn);
+        options.getChildren().addAll(restartBtn, menuBtn, quitBtn);
         options.getStyleClass().addAll("pane", "label", "textField", "button", "vbox");
 
         this.getStylesheets().add("Styles.css");
@@ -280,7 +332,7 @@ public class Arena extends BorderPane
         menuBtn.setOnAction(event ->
         {
             Menu menu = new Menu();
-            Scene scene = new Scene(menu, 500,500);
+            Scene scene = new Scene(menu, 500, 500);
             scene.getStylesheets().add("Styles.css");
             MainController.changeScene(scene);
         });
